@@ -9,9 +9,9 @@ interface CardProps {
 
 export const Card = ({ card, isSelected, onClick }: CardProps) => {
   const shapes = {
-    diamond: "M8 1 L14 8 L8 15 L2 8 Z",
-    pill: "M8 8 A2.5 2.5 0 1 1 8 8.001",
-    wave: "M2 9 Q4 5, 6 8 Q8 11, 10 8 Q12 5, 14 8 Q13 10, 8 10 Q3 10, 2 9",
+    diamond: "M 15,20 L 40,35 L 65,20 L 40,5 Z",
+    pill: "M 25,10 L 55,10 A 10,10 0 0 1 55,30 L 25,30 A 10,10 0 0 1 25,10 Z",
+    wave: "M 20,10 C 30,10 35,20 40,10 C 45,0 55,10 60,10 L 60,30 C 55,30 45,20 40,30 C 35,40 30,30 20,30 Z",
   };
 
   const colors = {
@@ -29,7 +29,7 @@ export const Card = ({ card, isSelected, onClick }: CardProps) => {
   return (
     <div
       className={clsx(
-        "relative w-24 h-36 border-2 rounded-lg cursor-pointer transition-all p-4 bg-white",
+        "relative w-36 h-48 border-2 rounded-lg cursor-pointer transition-all p-4 bg-white",
         "hover:shadow-lg",
         isSelected ? "border-blue-500 shadow-lg" : "border-gray-300"
       )}
@@ -39,7 +39,7 @@ export const Card = ({ card, isSelected, onClick }: CardProps) => {
         <svg
           width="100%"
           height="100%"
-          viewBox="0 0 16 16"
+          viewBox="0 0 80 40"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
@@ -66,7 +66,7 @@ export const Card = ({ card, isSelected, onClick }: CardProps) => {
               key={i}
               d={shapes[card.shape]}
               stroke={colors[card.color]}
-              strokeWidth={card.shape === "wave" ? "1.8" : "1"}
+              strokeWidth={1.8}
               fill={
                 card.fill === "striped"
                   ? `url(#stripe-${card.id})`
@@ -74,7 +74,7 @@ export const Card = ({ card, isSelected, onClick }: CardProps) => {
                   ? colors[card.color]
                   : fills[card.fill]
               }
-              transform={`translate(0, ${i * 6 - (card.number - 1) * 3})`}
+              transform={`translate(0, ${i * 30 - (card.number - 1) * 15})`}
             />
           ))}
         </svg>
