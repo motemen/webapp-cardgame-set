@@ -47,7 +47,10 @@ export const GameController = () => {
   const [deck, setDeck] = useState<Card[]>([]);
   const [board, setBoard] = useState<Card[]>([]);
   const [gameOver, setGameOver] = useState(false);
-  const [showEffect, setShowEffect] = useState(false);
+  const [showEffect, setShowEffect] = useState<{
+    show: boolean;
+    cards?: Card[];
+  }>({ show: false });
 
   useEffect(() => {
     startNewGame();
@@ -63,10 +66,10 @@ export const GameController = () => {
   const handleSetFound = (cards: Card[]) => {
     if (isSet(cards)) {
       // Show success effect
-      setShowEffect(true);
+      setShowEffect({ show: true, cards });
       setTimeout(() => {
-        setShowEffect(false);
-      }, 1500); // 1.5秒間エフェクトを表示
+        setShowEffect({ show: false });
+      }, 3000); // 3秒間エフェクトを表示
 
       // Remove found set from board
       const newBoard = board.filter(
@@ -99,22 +102,31 @@ export const GameController = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4 relative">
-      {showEffect && (
-        <div className="fixed inset-0 bg-green-500 bg-opacity-30 backdrop-blur-sm z-50 animate-fade-out flex items-center justify-center">
-          <div className="text-4xl text-white font-bold animate-bounce">
+      {showEffect.show && (
+        <div className="fixed inset-0 bg-green-500 bg-opacity-30 backdrop-blur-sm z-50 animate-fade-out flex flex-col items-center justify-center">
+          <div className="text-4xl text-white font-bold animate-bounce mb-8">
             SET!
           </div>
+          {showEffect.cards && (
+            <div className="flex gap-4 scale-80 transform">
+              {showEffect.cards.map((card) => (
+                <div key={card.id} className="w-32">
+                  <GameBoard cards={[card]} onSetFound={() => {}} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
-      <div className="flex justify-end mb-4 space-x-4">
+      <div className="flex justify-center mb-4 space-x-4">
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-600"
           onClick={startNewGame}
         >
           New Game
         </button>
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-600"
           onClick={addThreeCards}
           disabled={deck.length < 3}
         >
