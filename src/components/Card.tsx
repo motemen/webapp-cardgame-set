@@ -29,7 +29,7 @@ export const Card = ({ card, isSelected, onClick }: CardProps) => {
   return (
     <div
       className={clsx(
-        "relative w-36 h-48 border-2 rounded-lg cursor-pointer transition-all p-4 bg-white",
+        "relative md:w-36 md:h-48 w-30 h-40 border-[3px] rounded-lg cursor-pointer transition-all p-4 bg-white",
         "hover:shadow-lg",
         isSelected ? "border-blue-500 shadow-lg" : "border-gray-300"
       )}

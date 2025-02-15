@@ -33,7 +33,7 @@ export const GameBoard = ({ cards, onSetFound }: GameBoardProps) => {
 
       if (newSelectedCards.length === 3) {
         if (isSet(newSelectedCards)) {
-          setFeedback("correct");
+          // setFeedback("correct");
           onSetFound(newSelectedCards);
         } else {
           setFeedback("incorrect");
@@ -51,7 +51,7 @@ export const GameBoard = ({ cards, onSetFound }: GameBoardProps) => {
       {feedback && (
         <div
           className={clsx(
-            "absolute top-4 left-1/2 transform -translate-x-1/2 z-10 px-6 py-3 rounded-lg text-white font-bold text-lg transition-opacity",
+            "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-8 py-4 rounded-lg text-white font-bold text-2xl transition-opacity",
             {
               "bg-green-500": feedback === "correct",
               "bg-red-500": feedback === "incorrect",

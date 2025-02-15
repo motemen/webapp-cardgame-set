@@ -110,7 +110,7 @@ export const GameController = () => {
           {showEffect.cards && (
             <div className="flex gap-4 scale-80 transform">
               {showEffect.cards.map((card) => (
-                <div key={card.id} className="w-32">
+                <div key={card.id} className="w-32 m-4">
                   <GameBoard cards={[card]} onSetFound={() => {}} />
                 </div>
               ))}
