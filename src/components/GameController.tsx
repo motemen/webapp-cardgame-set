@@ -43,6 +43,8 @@ const findSetInCards = (cards: Card[]): Card[] | null => {
   return null;
 };
 
+const DEFAULT_BOARD_SIZE = 12;
+
 export const GameController = () => {
   const [deck, setDeck] = useState<Card[]>([]);
   const [board, setBoard] = useState<Card[]>([]);
@@ -58,8 +60,8 @@ export const GameController = () => {
 
   const startNewGame = () => {
     const newDeck = generateDeck();
-    setDeck(newDeck.slice(12));
-    setBoard(newDeck.slice(0, 12));
+    setDeck(newDeck.slice(DEFAULT_BOARD_SIZE));
+    setBoard(newDeck.slice(0, DEFAULT_BOARD_SIZE));
     setGameOver(false);
   };
 
@@ -71,17 +73,19 @@ export const GameController = () => {
         setShowEffect({ show: false });
       }, 3000); // 3秒間エフェクトを表示
 
-      // Remove found set from board
-      const newBoard = board.filter(
-        (card) => !cards.some((c) => c.id === card.id)
-      );
-
+      let newBoard: Card[];
       // Draw 3 new cards if available
-      if (deck.length >= 3) {
+      // And if there is space on the board
+      if (deck.length >= 3 && board.length <= DEFAULT_BOARD_SIZE) {
         const newCards = deck.slice(0, 3);
         setDeck(deck.slice(3));
-        setBoard([...newBoard, ...newCards]);
+        newBoard = board.map((card) =>
+          cards.some((c) => c.id === card.id) ? newCards.shift()! : card
+        );
+        setBoard(newBoard);
       } else {
+        // Remove found set from board
+        newBoard = board.filter((card) => !cards.some((c) => c.id === card.id));
         setBoard(newBoard);
       }
 
