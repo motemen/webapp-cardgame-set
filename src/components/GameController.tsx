@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Card } from "../types";
+import { Card, HistoryEntry } from "../types";
 import { GameBoard } from "./GameBoard";
+import { SetHistory } from "./SetHistory";
 import { isSet } from "../utils/isSet";
 
 const generateDeck = (): Card[] => {
@@ -53,6 +54,7 @@ export const GameController = () => {
     show: boolean;
     cards?: Card[];
   }>({ show: false });
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {
     startNewGame();
@@ -63,6 +65,9 @@ export const GameController = () => {
     setDeck(newDeck.slice(DEFAULT_BOARD_SIZE));
     setBoard(newDeck.slice(0, DEFAULT_BOARD_SIZE));
     setGameOver(false);
+    // 新しいゲームを開始するときに履歴をリセットしない
+    // 複数のゲームにわたって履歴を保持する
+    // setHistory([]);
   };
 
   const handleSetFound = (cards: Card[]) => {
@@ -72,6 +77,14 @@ export const GameController = () => {
       setTimeout(() => {
         setShowEffect({ show: false });
       }, 3000); // 3秒間エフェクトを表示
+
+      // 履歴に追加
+      const newHistoryEntry: HistoryEntry = {
+        id: Date.now(), // タイムスタンプをIDとして使用
+        cards: [...cards], // カードの配列をコピー
+        timestamp: Date.now(),
+      };
+      setHistory((prev) => [...prev, newHistoryEntry]);
 
       let newBoard: Card[];
       // Draw 3 new cards if available
@@ -146,6 +159,9 @@ export const GameController = () => {
       ) : (
         <GameBoard cards={board} onSetFound={handleSetFound} />
       )}
+
+      {/* セット履歴の表示 */}
+      <SetHistory history={history} />
     </div>
   );
 };
